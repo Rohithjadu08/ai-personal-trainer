@@ -1,66 +1,129 @@
-from typing import Dict, Any, Optional
-from dataclasses import dataclass, field
+from typing import Any, Dict, Optional
+from dataclasses import dataclass
 import time
+import os
+
+from sqlalchemy import create_engine, Column, String, Text
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
+
+from .auth import get_password_hash
 
 
 @dataclass
 class User:
-	id: str
-	email: str
-	name: str
-	password_hash: str
+    id: str
+    email: str
+    name: str
+    password_hash: str
+
+
+Base = declarative_base()
+
+
+class UserRow(Base):
+    __tablename__ = "users"
+
+    id = Column(String, primary_key=True)
+    email = Column(String, unique=True, index=True, nullable=False)
+    name = Column(String, nullable=False)
+    password_hash = Column(Text, nullable=False)
+
+
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
+_engine = None
+_SessionLocal = None
+
+
+def _ensure_engine():
+    global _engine, _SessionLocal
+    if _engine is None:
+        connect_args = {}
+        if DATABASE_URL.startswith("sqlite"):
+            connect_args = {"check_same_thread": False}
+        _engine = create_engine(DATABASE_URL, connect_args=connect_args, future=True)
+        Base.metadata.create_all(_engine)
+        _SessionLocal = sessionmaker(bind=_engine, future=True)
+    return _SessionLocal
 
 
 class Database:
-	def __init__(self):
-		# simple in-memory stores
-		self._users: Dict[str, User] = {}
-		self._by_email: Dict[str, User] = {}
-		self._plans: Dict[str, Any] = {}
-		self._chats: Dict[str, list] = {}
-		self._next_id = 1
+    """Persistent SQLite-backed store (auth-critical). Plans/chats are kept for
+    API compatibility; extend here if you need to persist them later."""
 
-	def _gen_id(self) -> str:
-		nid = str(self._next_id)
-		self._next_id += 1
-		return nid
+    def _new_session(self) -> Session:
+        SessionLocal = _ensure_engine()
+        return SessionLocal()
 
-	def get_user_by_email(self, email: str) -> Optional[User]:
-		return self._by_email.get(email)
+    def _gen_id(self) -> str:
+        import uuid
 
-	def create_user(self, email: str, password: str, name: str) -> User:
-		# store hashed password expected by auth.verify_password
-		from .auth import get_password_hash
+        return str(uuid.uuid4())
 
-		uid = self._gen_id()
-		ph = get_password_hash(password)
-		user = User(id=uid, email=email, name=name, password_hash=ph)
-		self._users[uid] = user
-		self._by_email[email] = user
-		return user
+    def get_user_by_email(self, email: str) -> Optional[User]:
+        session = self._new_session()
+        try:
+            row = session.query(UserRow).filter(UserRow.email == email).first()
+            if not row:
+                return None
+            return User(
+                id=row.id, email=row.email, name=row.name, password_hash=row.password_hash
+            )
+        finally:
+            session.close()
 
-	def get_user_by_id(self, user_id: str) -> Optional[User]:
-		return self._users.get(str(user_id))
+    def create_user(self, email: str, password: str, name: str) -> User:
+        session = self._new_session()
+        try:
+            user = UserRow(
+                id=self._gen_id(),
+                email=email,
+                name=name,
+                password_hash=get_password_hash(password),
+            )
+            session.add(user)
+            session.commit()
+            session.refresh(user)
+            return User(
+                id=user.id,
+                email=user.email,
+                name=user.name,
+                password_hash=user.password_hash,
+            )
+        finally:
+            session.close()
 
-	def get_user_profile_stats(self, user_id: str) -> dict:
-		# stubbed profile stats
-		return {"last_login": int(time.time()), "workouts_completed": 0}
+    def get_user_by_id(self, user_id: str) -> Optional[User]:
+        session = self._new_session()
+        try:
+            row = session.get(UserRow, str(user_id))
+            if not row:
+                return None
+            return User(
+                id=row.id, email=row.email, name=row.name, password_hash=row.password_hash
+            )
+        finally:
+            session.close()
 
-	def save_plan(self, user_id: str, plan_type: str, plan: Any) -> None:
-		self._plans.setdefault(user_id, {})[plan_type] = plan
+    def get_user_profile_stats(self, user_id: str) -> dict:
+        return {"last_login": int(time.time()), "workouts_completed": 0}
 
-	def save_chat_message(self, user_id: str, message: str, reply: str, source: str) -> None:
-		self._chats.setdefault(user_id, []).append({"message": message, "reply": reply, "source": source})
+    def save_plan(self, user_id: str, plan_type: str, plan: Any) -> None:
+        # Kept for API compatibility; persists nothing in the minimal store.
+        return None
+
+    def save_chat_message(
+        self, user_id: str, message: str, reply: str, source: str
+    ) -> None:
+        # Kept for API compatibility; persists nothing in the minimal store.
+        return None
 
 
-# Module-level singleton for simple in-memory DB across requests
+# Module-level singleton for the DB engine across requests.
 _DB_INSTANCE: Optional[Database] = None
 
 
 def get_db() -> Database:
-	global _DB_INSTANCE
-	if _DB_INSTANCE is None:
-		_DB_INSTANCE = Database()
-	return _DB_INSTANCE
-
-
+    global _DB_INSTANCE
+    if _DB_INSTANCE is None:
+        _DB_INSTANCE = Database()
+    return _DB_INSTANCE

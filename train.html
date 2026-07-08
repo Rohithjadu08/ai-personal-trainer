@@ -210,6 +210,8 @@
     </div>
   </footer>
 
+  <script src="./fitai-config.js"></script>
+  <script src="./config.generated.js"></script>
   <script src="./app.js"></script>
   <script src="./neon-trail.js"></script>
   <script src="./frontend-api.js"></script>
@@ -365,7 +367,7 @@
             const userData = JSON.parse(localStorage.getItem('fitai_user') || '{}');
             const userId = userData.id || userData.user_id || '1';
 
-            await fetch('http://localhost:8000/workout/switch-exercise', {
+            await fetch(fitaiApiBase() + '/workout/switch-exercise', {
               method: 'POST',
               headers: {'Content-Type':'application/json'},
               body: JSON.stringify({ user_id: userId, exercise })
@@ -413,7 +415,7 @@
           userData = {};
         }
         const userId = userData.id || userData.user_id || '1';
-        const wsUrl = `ws://localhost:8000/ws/${userId}`;
+        const wsUrl = `${fitaiWsBase()}/ws/${userId}`;
         ws = new WebSocket(wsUrl);
 
         ws.onopen = () => {
@@ -495,7 +497,7 @@
           const userData = JSON.parse(localStorage.getItem('fitai_user') || '{}');
           const userId = userData.id || userData.user_id || '1';
 
-          await fetch('http://localhost:8000/workout/switch-exercise', {
+          await fetch(fitaiApiBase() + '/workout/switch-exercise', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({ user_id: userId, exercise: exerciseKey })
@@ -506,7 +508,7 @@
           const userData = JSON.parse(localStorage.getItem('fitai_user') || '{}');
           const userId = userData.id || userData.user_id || '1';
 
-          await fetch('http://localhost:8000/workout/end/' + userId, {
+          await fetch(fitaiApiBase() + '/workout/end/' + userId, {
             method: 'POST',
             headers: {'Content-Type':'application/json'}
           });

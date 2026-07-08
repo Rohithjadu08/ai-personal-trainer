@@ -11,6 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 
+  <!-- Backend API configuration (no hardcoded localhost URLs) -->
+  <script src="./fitai-config.js"></script>
+  <script src="./config.generated.js"></script>
+
   <link rel="icon" href="data:image/svg+xml,
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
 <text y='.9em' font-size='90'>⚡</text></svg>">
@@ -384,7 +388,7 @@
 
       async function fetchUserProfile(token, email) {
         try {
-          const profileRes = await fetch('http://localhost:8000/profile', {
+          const profileRes = await fetch(fitaiApiBase() + '/profile', {
             headers: { 'Authorization': 'Bearer ' + token }
           });
           if (profileRes.ok) {
@@ -416,7 +420,7 @@
 
       async function handleLogin(email, password) {
         try {
-          const res = await fetch('http://localhost:8000/login', {
+          const res = await fetch(fitaiApiBase() + '/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -486,7 +490,7 @@
         }
 
         try {
-          const res = await fetch('http://localhost:8000/register', {
+          const res = await fetch(fitaiApiBase() + '/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })

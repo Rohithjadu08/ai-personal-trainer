@@ -44,5 +44,35 @@ Open: http://localhost:3000
 - Sujan Khatri — Co-Founder & Network Manager
 - Samagya Baral — Co-Founder & Graphic Designer
 
+## 🚀 Deploy (Vercel frontend + Render backend)
+
+The frontend is static and talks to a **separate backend**. Auth fails with
+"Connection error" if the frontend still points at `localhost`. There are NO
+hardcoded backend URLs — the base URL is injected at build time.
+
+### 1. Deploy the backend to Render
+- New → Web Service → connect this repo.
+- Set **Root Directory**: `ai-personal-trainer-backend`
+- Build: `pip install -r requirements.txt`
+- Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- (Or just commit `render.yaml` — Render auto-detects it.)
+- Add env vars (Render can auto-generate `JWT_SECRET`):
+  `JWT_SECRET`, `JWT_ALGORITHM=HS256`, `ACCESS_TOKEN_EXPIRE_MINUTES=60`,
+  `DATABASE_URL=sqlite:///./app.db`, `CORS_ORIGINS=*`, `HOST=0.0.0.0`.
+- Copy the deployed URL, e.g. `https://ai-personal-trainer-backend.onrender.com`.
+
+### 2. Point the Vercel frontend at the backend
+- In Vercel project settings set **Build Command**: `node build.js`
+  (Output Directory: `.`). `build.js` writes `config.generated.js` from the
+  `FITAI_API_URL` env var.
+- Add Vercel env var: `FITAI_API_URL` = your Render backend URL
+  (e.g. `https://ai-personal-trainer-backend.onrender.com`).
+- Redeploy. The frontend now calls the deployed backend — no code edits needed.
+
+### 3. Local development
+- Backend: `cd ai-personal-trainer-backend && uvicorn app.main:app --port 8000`
+- Frontend: `python serve.py` → http://localhost:3000
+- Locally `config.generated.js` falls back to `http://127.0.0.1:8000`.
+
 ## 📄 License
 MIT License - Zaya Group of Company 2026

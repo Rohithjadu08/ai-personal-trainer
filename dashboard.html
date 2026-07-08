@@ -9,6 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
+
+  <!-- Backend API configuration (no hardcoded localhost URLs) -->
+  <script src="./fitai-config.js"></script>
+  <script src="./config.generated.js"></script>
 </head>
 <body>
   <script>
@@ -203,7 +207,7 @@
 
     async function loadDashboard() {
       try {
-        const res = await fetch('http://localhost:8000/sessions/stats');
+        const res = await fetch(fitaiApiBase() + '/sessions/stats');
         const data = await res.json();
 
         // If no sessions exist, show message and clear charts/table

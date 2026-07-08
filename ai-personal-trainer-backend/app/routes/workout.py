@@ -15,9 +15,8 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 
 from ..config_ai import CAMERA_INDEX, DEFAULT_EXERCISE
-from ..form_checker import FormChecker
-from ..pose_detector import PoseDetector
 from ..rep_counter import RepCounter
+from ..form_checker import FormChecker
 from ..session_logger import SessionLogger
 
 router = APIRouter()
@@ -283,6 +282,8 @@ async def workout_stream(websocket: WebSocket, user_id: str):
 
         # Create PoseDetector inside a try block
         try:
+            from ..pose_detector import PoseDetector
+
             detector = PoseDetector()
         except Exception as e:
             raise RuntimeError(f"Failed to initialize PoseDetector: {e}")

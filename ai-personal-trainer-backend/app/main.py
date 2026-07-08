@@ -1,14 +1,12 @@
-# This file was regenerated due to earlier formatting issues.
 # Minimal working FastAPI backend with SQLite + SQLAlchemy and JWT auth.
 
-import asyncio
-import json
 import os
 import time
 from datetime import timedelta
 
-from fastapi import APIRouter
+from dotenv import load_dotenv
 
+load_dotenv()
 
 from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -61,10 +59,18 @@ def get_current_user(
 
 app = FastAPI(title="AI Personal Trainer Backend")
 
+# CORS: allow a configurable list of origins. Auth uses a Bearer token in the
+# Authorization header (not cookies), so credentials are disabled and "*" is a
+# valid value. Set CORS_ORIGINS to a comma-separated list (e.g. your Vercel URL)
+# to lock it down.
+_raw_origins = os.getenv("CORS_ORIGINS", "*")
+CORS_ORIGINS = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+_ALLOW_ALL = CORS_ORIGINS == ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["*"] if _ALLOW_ALL else CORS_ORIGINS,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -173,17 +179,26 @@ def chat(
 
 
 # --- Workout routes (AI fitness tracking) ---
-# Replaces the previous stub websocket with the real implementation in app/routes/workout.py
-from .routes.workout import router as workout_router
+# These pull in MediaPipe/OpenCV (heavy native packages). Importing them is done
+# defensively so the REST API (auth, profile, chat, plans) still boots on hosts
+# where those packages are not installed (e.g. Render). The camera/WebSocket
+# workout streaming requires those packages + a webcam and runs against a local
+# backend.
+try:
+    from .routes.workout import router as workout_router
 
-app.include_router(workout_router)
+    app.include_router(workout_router)
+except Exception as _exc:  # pragma: no cover - defensive
+    print("WARNING: workout router not loaded:", _exc)
 
-# --- Fix auth/register error due to in-memory singleton DB reset across requests ---
-# Ensure the same Database instance is reused by forcing a single import path.
 
+if __name__ == "__main__":
+    import uvicorn
 
-# Frontend integration notes:
-# - REST: include JWT in Authorization header: `Authorization: Bearer <token>`
-# - WebSocket: connect to ws://localhost:8000/ws/<user_id>
+    uvicorn.run(
+        "app.main:app",
+        host=os.getenv("HOST", "0.0.0.0"),
+        port=int(os.getenv("PORT", "8000")),
+    )
 
 

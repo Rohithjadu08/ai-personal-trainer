@@ -1,6 +1,6 @@
 (() => {
   const API = {
-    base: 'http://127.0.0.1:8000',
+    base: window.fitaiApiBase(),
     async register(email = 'demo@local', password = 'password', name = 'Demo User'){
       try{
         const res = await fetch(`${this.base}/register`, {
@@ -49,7 +49,7 @@
     }
 
     // connect websocket
-    const ws = new WebSocket(`ws://127.0.0.1:8000/ws/${userId}`);
+    const ws = new WebSocket(`${window.fitaiWsBase()}/ws/${userId}`);
     ws.addEventListener('open', () => console.log('ws open'));
     ws.addEventListener('message', (ev) => {
       try{
