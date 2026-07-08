@@ -1,0 +1,21 @@
+
+fastapi==0.110.0
+uvicorn==0.27.0
+SQLAlchemy==2.0.30
+pydantic==2.6.0
+pydantic-settings==2.2.0
+python-jose==3.3.0
+passlib==1.7.4
+PyJWT==2.8.0
+python-dotenv==1.0.0
+bcrypt==4.1.2
+# Optional heavy native packages (mediapipe/opencv/numpy/pyttsx3) removed to
+# allow starting the REST server in environments without compiled wheels.
+# Install them separately when running camera features locally.
+# mediapipe==0.10.35
+#opencv-python==4.9.0.80
+#numpy==1.26.4
+#pyttsx3==2.90
+websockets==12.0
+
+

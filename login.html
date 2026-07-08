@@ -1,0 +1,545 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - AI Personal Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+
+  <link rel="icon" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+<text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="navbar navbar--glass" id="siteNavbar">
+    <div class="container navbar-inner">
+      <a class="brand" href="./index.html">
+        <span class="logo">⚡ FITAI</span>
+      </a>
+      <nav class="navlinks" aria-label="Primary">
+        <a class="navlink" href="./index.html">Home</a>
+        <a class="navlink" href="./train.html">Train</a>
+        <a class="navlink" href="./dashboard.html">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site">
+    <section class="section" style="padding-top:110px;">
+      <div class="container" style="display:flex; justify-content:center;">
+        <div class="auth-shell" style="width:100%; max-width:420px;">
+          <div class="auth-card card neon-border" id="authCard">
+            <div class="auth-top" style="text-align:center; margin-bottom:22px;">
+              <div class="auth-logo" style="font-family:'Orbitron', sans-serif; font-weight:800; letter-spacing:0.08em; font-size:32px; color:rgba(0,212,255,1); text-shadow:0 0 12px rgba(0,212,255,0.8), 0 0 28px rgba(155,89,255,0.35);">
+                ⚡ FITAI
+              </div>
+              <div class="auth-sub" style="margin-top:8px; font-family:'Orbitron', sans-serif; font-size:12px; letter-spacing:0.24em; color:rgba(155,89,255,0.95); text-shadow:0 0 18px rgba(155,89,255,0.35);">
+                AI PERSONAL TRAINER
+              </div>
+            </div>
+
+            <div class="toggle-wrap" style="display:flex; gap:14px; justify-content:center; margin-bottom:18px;">
+              <button type="button" class="toggle-btn is-active" id="tabLogin">SIGN IN</button>
+              <button type="button" class="toggle-btn" id="tabRegister">REGISTER</button>
+            </div>
+
+            <!-- LOGIN -->
+            <form class="auth-form" id="loginForm">
+              <h2 class="neon-h neon-h--3d" style="text-align:center; font-size:26px; margin:0 0 18px;">
+                SIGN IN
+              </h2>
+
+              <label class="field">
+                <span class="field-label">EMAIL</span>
+                <input autocomplete="email" type="email" id="loginEmail" placeholder="you@example.com" required />
+              </label>
+
+              <label class="field" style="margin-top:14px;">
+                <span class="field-label">PASSWORD</span>
+                <div class="pw-wrap">
+                  <input autocomplete="current-password" type="password" id="loginPassword" placeholder="••••••••" required />
+                  <button class="pw-toggle" type="button" aria-label="Show password" data-target="loginPassword">👁</button>
+                </div>
+              </label>
+
+              <div class="auth-actions" style="margin-top:18px;">
+                <button class="auth-submit" type="submit">SIGN IN</button>
+              </div>
+
+              <div class="auth-links" style="margin-top:14px;">
+                <a href="#" id="linkToRegister" class="neon-link">Don't have an account? REGISTER</a>
+                <a href="#" class="neon-link" id="forgotLink" style="display:block; margin-top:10px;">Forgot password?</a>
+              </div>
+
+              <div id="authMessage" style="display:none"></div>
+            </form>
+
+            <!-- REGISTER -->
+            <form class="auth-form is-hidden" id="registerForm">
+              <h2 class="neon-h neon-h--3d" style="text-align:center; font-size:26px; margin:0 0 18px;">
+                CREATE ACCOUNT
+              </h2>
+
+              <label class="field">
+                <span class="field-label">NAME</span>
+                <input autocomplete="name" type="text" id="regName" placeholder="Your name" required />
+              </label>
+
+              <label class="field" style="margin-top:14px;">
+                <span class="field-label">EMAIL</span>
+                <input autocomplete="email" type="email" id="regEmail" placeholder="you@example.com" required />
+              </label>
+
+              <label class="field" style="margin-top:14px;">
+                <span class="field-label">PASSWORD</span>
+                <div class="pw-wrap">
+                  <input autocomplete="new-password" type="password" id="regPassword" placeholder="Create a password" required />
+                  <button class="pw-toggle" type="button" aria-label="Show password" data-target="regPassword">👁</button>
+                </div>
+              </label>
+
+              <label class="field" style="margin-top:14px;">
+                <span class="field-label">CONFIRM PASSWORD</span>
+                <div class="pw-wrap">
+                  <input autocomplete="new-password" type="password" id="regConfirm" placeholder="Repeat password" required />
+                  <button class="pw-toggle" type="button" aria-label="Show password" data-target="regConfirm">👁</button>
+                </div>
+              </label>
+
+              <div class="auth-actions" style="margin-top:18px;">
+                <button class="auth-submit auth-submit--purple" type="submit">CREATE ACCOUNT</button>
+              </div>
+
+              <div class="auth-links" style="margin-top:14px;">
+                <a href="#" id="linkToLogin" class="neon-link">Already have an account? SIGN IN</a>
+              </div>
+
+              <div id="authMessage" style="display:none"></div>
+            </form>
+
+            <!-- Inline styles for auth (to keep matching theme without editing styles.css) -->
+            <style>
+              .toggle-btn{
+                font-family:'Orbitron', sans-serif;
+                letter-spacing:0.10em;
+                font-size:12px;
+                border-radius:999px;
+                padding:10px 14px;
+                cursor:pointer;
+                border:1px solid rgba(0,212,255,0.22);
+                background: rgba(0,0,0,0.10);
+                color: rgba(234,246,255,0.75);
+                transition: all .2s ease;
+              }
+              .toggle-btn.is-active{
+                background: rgba(0,212,255,0.12);
+                border-color: rgba(0,212,255,0.75);
+                color: rgba(0,212,255,1);
+                box-shadow: 0 0 18px rgba(0,212,255,0.20);
+              }
+
+              .auth-card{padding:40px; position:relative;}
+              .auth-card::after{
+                content:'';
+                position:absolute;
+                inset:-1px;
+                border-radius:16px;
+                pointer-events:none;
+                background: radial-gradient(circle at 20% 10%, rgba(0,212,255,0.18), transparent 40%),
+                            radial-gradient(circle at 70% 40%, rgba(155,89,255,0.14), transparent 45%);
+                opacity:0.8;
+              }
+              .auth-card > *{position:relative; z-index:1;}
+
+              .field{display:block;}
+              .field-label{
+                display:block;
+                font-family:'Orbitron', sans-serif;
+                font-size:11px;
+                letter-spacing:0.22em;
+                color: rgba(155,89,255,0.95);
+                margin:0 0 8px;
+              }
+              input{
+                width:100%;
+                padding:14px 14px;
+                border-radius:12px;
+                border:1px solid rgba(0,212,255,0.22);
+                background: rgba(2,8,24,0.35);
+                color: rgba(234,246,255,0.95);
+                outline:none;
+                transition: box-shadow .2s ease, border-color .2s ease, transform .15s ease;
+                font-family:'Rajdhani', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+              }
+              input::placeholder{color: rgba(166,198,216,0.55);}
+              input:focus{
+                border-color: rgba(0,212,255,0.9);
+                box-shadow: 0 0 22px rgba(0,212,255,0.30);
+                transform: translateY(-1px);
+              }
+
+              .pw-wrap{position:relative;}
+              .pw-toggle{
+                position:absolute;
+                right:10px;
+                top:50%;
+                transform: translateY(-50%);
+                width:36px;
+                height:36px;
+                border-radius:10px;
+                border:1px solid rgba(155,89,255,0.35);
+                background: rgba(0,0,0,0.16);
+                color: rgba(155,89,255,0.95);
+                cursor:pointer;
+                font-size:14px;
+                transition: all .2s ease;
+              }
+              .pw-toggle:hover{
+                border-color: rgba(0,212,255,0.65);
+                box-shadow: 0 0 18px rgba(0,212,255,0.18);
+                color: rgba(0,212,255,1);
+              }
+
+              .auth-submit{
+                width:100%;
+                padding:14px 18px;
+                border-radius:14px;
+                border:1px solid rgba(0,212,255,0.65);
+                background: rgba(0,212,255,1);
+                color: #001018;
+                font-family:'Orbitron', sans-serif;
+                letter-spacing:0.10em;
+                cursor:pointer;
+                box-shadow: 0 0 22px rgba(0,212,255,0.25);
+                transition: all .2s ease;
+              }
+              .auth-submit:hover{
+                transform: translateY(-2px);
+                box-shadow: 0 0 34px rgba(0,212,255,0.55), 0 0 70px rgba(155,89,255,0.18);
+              }
+
+              .auth-submit--purple{
+                border-color: rgba(155,89,255,0.75);
+                background: rgba(155,89,255,1);
+                color: rgba(2,8,24,0.95);
+                box-shadow: 0 0 22px rgba(155,89,255,0.25);
+              }
+              .auth-submit--purple:hover{
+                box-shadow: 0 0 34px rgba(155,89,255,0.55), 0 0 70px rgba(0,212,255,0.18);
+              }
+
+              .auth-links{display:block;}
+              .neon-link{
+                font-family:'Orbitron', sans-serif;
+                font-size:12px;
+                letter-spacing:0.05em;
+                color: rgba(155,89,255,0.95);
+                text-decoration:none;
+                display:inline-block;
+                transition: all .2s ease;
+              }
+              .neon-link:hover{
+                color: rgba(0,212,255,1);
+                text-shadow: 0 0 18px rgba(0,212,255,0.35);
+                transform: translateY(-1px);
+              }
+
+              .auth-form{display:block; transition: opacity .25s ease, transform .25s ease;}
+              .auth-form.is-hidden{display:none;}
+
+              .auth-message{
+                font-family:'Orbitron', sans-serif;
+                font-size:12px;
+                letter-spacing:0.04em;
+                min-height:18px;
+              }
+              .auth-message.is-error{color: rgba(255,59,59,1); text-shadow: 0 0 18px rgba(255,59,59,0.25);}
+              .auth-message.is-success{color: rgba(45,255,122,1); text-shadow: 0 0 18px rgba(45,255,122,0.25);}
+            </style>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-line"></div>
+<p class="footer-text neon-purple">Powered by Zaya Group of Company</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const tabLogin = document.getElementById('tabLogin');
+      const tabRegister = document.getElementById('tabRegister');
+
+      const linkToRegister = document.getElementById('linkToRegister');
+      const linkToLogin = document.getElementById('linkToLogin');
+
+      const loginEmailEl = document.getElementById('loginEmail');
+      const loginPasswordEl = document.getElementById('loginPassword');
+
+      const forgotLink = document.getElementById('forgotLink');
+
+      // Shared message functions - must have <div id="authMessage" style="display:none"></div>
+      function getActiveAuthMessageEl() {
+        // There are two authMessage divs (one in each form). Use the one belonging to the visible form.
+        const inLogin = !!(loginForm && loginForm.offsetParent !== null);
+        const container = inLogin ? loginForm : registerForm;
+        if (!container) return document.getElementById('authMessage');
+        const el = container.querySelector('#authMessage');
+        return el || document.getElementById('authMessage');
+      }
+
+      function showError(msg) {
+        const el = getActiveAuthMessageEl();
+        if (el) {
+          el.textContent = msg;
+          el.style.color = 'rgba(255,59,59,1)';
+          el.style.display = 'block';
+          el.style.background = 'rgba(255,59,59,0.1)';
+          el.style.border = '1px solid rgba(255,59,59,0.3)';
+          el.style.padding = '10px 14px';
+          el.style.borderRadius = '8px';
+          el.style.marginTop = '12px';
+          el.style.fontSize = '13px';
+        }
+      }
+
+      function showSuccess(msg) {
+        const el = getActiveAuthMessageEl();
+        if (el) {
+          el.textContent = msg;
+          el.style.color = 'rgba(45,255,122,1)';
+          el.style.display = 'block';
+          el.style.background = 'rgba(45,255,122,0.1)';
+          el.style.border = '1px solid rgba(45,255,122,0.3)';
+          el.style.padding = '10px 14px';
+          el.style.borderRadius = '8px';
+          el.style.marginTop = '12px';
+          el.style.fontSize = '13px';
+        }
+      }
+
+      function clearMessages() {
+        // clear both to avoid old messages showing when switching tabs
+        document.querySelectorAll('#authMessage').forEach(el => {
+          el.style.display = 'none';
+          el.textContent = '';
+        });
+      }
+
+      function showLogin() {
+        tabLogin && tabLogin.classList.add('is-active');
+        tabRegister && tabRegister.classList.remove('is-active');
+        loginForm && loginForm.classList.remove('is-hidden');
+        registerForm && registerForm.classList.add('is-hidden');
+        clearMessages();
+      }
+
+      function showRegister() {
+        tabRegister && tabRegister.classList.add('is-active');
+        tabLogin && tabLogin.classList.remove('is-active');
+        registerForm && registerForm.classList.remove('is-hidden');
+        loginForm && loginForm.classList.add('is-hidden');
+        clearMessages();
+      }
+
+      tabLogin && tabLogin.addEventListener('click', showLogin);
+      tabRegister && tabRegister.addEventListener('click', showRegister);
+      linkToRegister && linkToRegister.addEventListener('click', (e) => { e.preventDefault(); showRegister(); });
+      linkToLogin && linkToLogin.addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+
+      // Forgot password (alert only)
+      forgotLink && forgotLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Forgot password functionality is not enabled yet.');
+      });
+
+      // Password show/hide toggles
+      document.querySelectorAll('.pw-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
+          const input = document.getElementById(targetId);
+          if(!input) return;
+          const isPwd = input.type === 'password';
+          input.type = isPwd ? 'text' : 'password';
+          btn.textContent = isPwd ? '🙈' : '👁';
+        });
+      });
+
+      function requireNonEmpty(v){
+        return typeof v === 'string' && v.trim().length > 0;
+      }
+
+      async function fetchUserProfile(token, email) {
+        try {
+          const profileRes = await fetch('http://localhost:8000/profile', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          if (profileRes.ok) {
+            return await profileRes.json();
+          }
+        } catch (e) {}
+        // fallback
+        const guessedName = (email || '').split('@')[0] || '';
+        return { email: email || '', name: guessedName };
+      }
+
+      function normalizeUserObject(data, email) {
+        // Handles response user nesting variants.
+        let user = {};
+        if (data && data.user && typeof data.user === 'object') {
+          user = data.user;
+        } else if (data && data.email) {
+          user = { email: data.email, name: data.name || '' };
+        } else {
+          user = { email: email || '', name: (email || '').split('@')[0] || '' };
+        }
+
+        if (!user.email) user.email = email;
+        if (!user.name) user.name = (email || '').split('@')[0] || '';
+        if (!user.id && user.user_id) user.id = user.user_id;
+        if (!user.id) user.id = '1';
+        return user;
+      }
+
+      async function handleLogin(email, password) {
+        try {
+          const res = await fetch('http://localhost:8000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+
+          if (!res.ok) {
+            showError('Invalid email or password. Try again.');
+            return;
+          }
+
+          const data = await res.json();
+          console.log('Login response:', data);
+
+          const token = data.access_token || data.token;
+          if (!token) {
+            showError('Login failed. Please try again.');
+            return;
+          }
+
+          localStorage.setItem('fitai_token', token);
+
+          let user = normalizeUserObject(data, email);
+
+          // If response doesn't include enough user data, try profile.
+          if (!user.email || user.email === 'undefined') {
+            user = await fetchUserProfile(token, email);
+            user = normalizeUserObject({ user }, email);
+          }
+
+          localStorage.setItem('fitai_user', JSON.stringify(user));
+
+          showSuccess('Welcome back ' + (user.name || user.email) + '!');
+          setTimeout(() => {
+            window.location.href = './train.html';
+          }, 800);
+
+        } catch(e) {
+          showError('Connection error. Is the backend running?');
+          console.error('Login error:', e);
+        }
+      }
+
+      // LOGIN submit
+      loginForm && loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearMessages();
+
+        const email = loginEmailEl?.value?.trim();
+        const password = loginPasswordEl?.value || '';
+
+        if(!requireNonEmpty(email) || !requireNonEmpty(password)){
+          showError('Invalid email or password. Try again.');
+          return;
+        }
+
+        await handleLogin(email, password);
+      });
+
+      async function handleRegister(name, email, password, confirmPassword) {
+        if (password !== confirmPassword) {
+          showError('Passwords do not match!');
+          return;
+        }
+        if (password.length < 6) {
+          showError('Password must be at least 6 characters');
+          return;
+        }
+
+        try {
+          const res = await fetch('http://localhost:8000/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+          });
+
+          if (res.status === 409) {
+            showError('This email is already registered. Switching to Sign In...');
+            setTimeout(() => {
+              showLogin();
+              if (loginEmailEl) loginEmailEl.value = email;
+              if (loginPasswordEl) loginPasswordEl.focus();
+            }, 1500);
+            return;
+          }
+
+          if (!res.ok) {
+            showError('Registration failed. Try again.');
+            return;
+          }
+
+          showSuccess('Account created! Signing you in...');
+
+          setTimeout(() => {
+            handleLogin(email, password);
+          }, 1000);
+
+        } catch(e) {
+          showError('Connection error. Is the backend running?');
+        }
+      }
+
+      // REGISTER submit
+      registerForm && registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearMessages();
+
+        const name = document.getElementById('regName')?.value?.trim();
+        const email = document.getElementById('regEmail')?.value?.trim();
+        const password = document.getElementById('regPassword')?.value || '';
+        const confirm = document.getElementById('regConfirm')?.value || '';
+
+        if(!requireNonEmpty(name) || !requireNonEmpty(email) || !requireNonEmpty(password) || !requireNonEmpty(confirm)){
+          showError('Please fill all fields.');
+          return;
+        }
+
+        await handleRegister(name, email, password, confirm);
+      });
+
+      // Default state
+      showLogin();
+    })();
+  </script>
+</body>
+</html>
+

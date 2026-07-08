@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Train - AI Personal Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <script>
+    (function() {
+      const token = localStorage.getItem('fitai_token');
+      const userStr = localStorage.getItem('fitai_user');
+
+      // Safety checks for missing/invalid localStorage values
+      if (!token || token === 'undefined' || !userStr || userStr === 'undefined' || userStr === 'null') {
+        localStorage.removeItem('fitai_token');
+        localStorage.removeItem('fitai_user');
+        window.location.href = './login.html';
+        return;
+      }
+
+      try {
+        const user = JSON.parse(userStr);
+        if (!user || (!user.id && !user.email)) {
+          localStorage.removeItem('fitai_token');
+          localStorage.removeItem('fitai_user');
+          window.location.href = './login.html';
+          return;
+        }
+      } catch(e) {
+        localStorage.removeItem('fitai_token');
+        localStorage.removeItem('fitai_user');
+        window.location.href = './login.html';
+        return;
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        try {
+          const userData = JSON.parse(userStr);
+          const nameEl = document.getElementById('userName');
+          if (nameEl) {
+            nameEl.textContent = userData.name || userData.email;
+          }
+        } catch (e) {}
+      });
+    })();
+
+    function logout() {
+      localStorage.removeItem('fitai_token');
+      localStorage.removeItem('fitai_user');
+      window.location.href = './index.html';
+    }
+
+
+    
+
+  </script>
+
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="navbar navbar--glass" id="siteNavbar">
+    <div class="container navbar-inner">
+      <a class="brand" href="./index.html">
+        <span class="logo">⚡ FITAI</span>
+      </a>
+      <nav class="navlinks" aria-label="Primary">
+        <a class="navlink" href="./index.html">Home</a>
+        <a class="navlink" href="./train.html">Train</a>
+        <a class="navlink" href="./dashboard.html">Dashboard</a>
+      </nav>
+
+      <div class="nav-user">
+        <span class="user-name neon-cyan" id="userName"></span>
+        <button class="btn-logout" onclick="logout()">LOGOUT</button>
+      </div>
+    </div>
+  </header>
+
+  <style>
+    .nav-user{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .user-name{
+      font-family:'Orbitron', sans-serif;
+      font-size:12px;
+      letter-spacing:0.04em;
+      color: rgba(0,212,255,0.95);
+      text-shadow: 0 0 14px rgba(0,212,255,0.35);
+      max-width: 150px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid rgba(255,59,59,0.5);
+      color: rgba(255,59,59,0.8);
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover {
+      background: rgba(255,59,59,0.1);
+      border-color: rgba(255,59,59,1);
+      color: rgba(255,59,59,1);
+      box-shadow: 0 0 10px rgba(255,59,59,0.3);
+    }
+  </style>
+
+
+  <div class="loading-screen" id="loadingScreen" aria-live="polite">
+    <div id="particleMount" style="position:absolute; inset:0; opacity:.85;"></div>
+    <div class="loading-card">
+      <div class="loading-title">INITIALIZING AI SYSTEMS...</div>
+      <div class="loading-bar" aria-hidden="true">
+        <div class="loading-fill" id="loadingFill"></div>
+      </div>
+      <div style="text-align:center; margin-top:12px; color:rgba(234,246,255,0.75); font-size:14px;">Calibrating pose + scoring engine</div>
+    </div>
+  </div>
+
+  <main class="site page">
+    <section class="section train">
+      <div class="container train-layout">
+        <div class="webcam-panel" data-reveal>
+          <div class="webcam-frame neon-border">
+            <div class="webcam-container" id="webcam-container">
+              <div class="reticle" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+
+              <div class="scanline" aria-hidden="true">
+                <div class="scanline-bar"></div>
+              </div>
+
+              <div class="webcam-overlay">
+                <div class="webcam-text neon-h neon-h--3d">INITIALIZING CAMERA...</div>
+              </div>
+
+              <div class="webcam-placeholder" aria-hidden="true">
+              </div>
+
+              <canvas id="workoutCanvas" width="640" height="480" style="width:100%; height:auto; display:block;"></canvas>
+              <div id="wsStatus" style="margin-top:10px; color:rgba(234,246,255,0.9); font-family:Rajdhani, Orbitron, sans-serif; letter-spacing:.04em;">DISCONNECTED</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="controls-panel card borderGlow" data-reveal>
+          <h2 class="neon-h neon-h--3d" style="margin:0 0 14px;">WORKOUT CONTROLS</h2>
+
+          <div class="controls-exercises">
+            <div class="controls-grid">
+              <button class="ex-btn" data-ex="SQUAT">SQUAT</button>
+              <button class="ex-btn" data-ex="BICEP CURL">BICEP CURL</button>
+              <button class="ex-btn" data-ex="PUSH UP">PUSH UP</button>
+              <button class="ex-btn" data-ex="SHOULDER PRESS">SHOULDER PRESS</button>
+              <button class="ex-btn" data-ex="LUNGE">LUNGE</button>
+            </div>
+          </div>
+
+          <div class="rep-score-row">
+            <div class="rep-counter">
+              <div class="rep-value neon-h neon-h--3d" id="repValue" data-count="0">0</div>
+              <div class="rep-label neon-purple">REPS</div>
+              <div class="stage" id="stageText">STAGE: READY</div>
+            </div>
+
+            <div class="form-ring">
+              <svg viewBox="0 0 120 120" class="ring-svg" aria-label="Form score ring" role="img">
+                <circle class="ring-bg" cx="60" cy="60" r="48"></circle>
+                <circle class="ring-fg" cx="60" cy="60" r="48" stroke-dasharray="301.59" stroke-dashoffset="301.59"></circle>
+              </svg>
+              <div class="ring-center">
+                <div class="ring-score neon-h neon-h--3d" id="formScore">0</div>
+              </div>
+              <div class="ring-caption neon-purple">FORM SCORE</div>
+            </div>
+          </div>
+
+          <div class="feedback-box" id="feedbackBox">
+            <div class="feedback-text" id="feedbackText">Waiting for movement...</div>
+          </div>
+
+          <div class="controls-buttons">
+            <button class="btn btn--primary" type="button">▶ START</button>
+            <button class="btn btn--outline" style="border-color: rgba(255,225,74,.65); color: rgba(255,225,74,.95);" type="button">⏸ PAUSE</button>
+            <button class="btn btn--outline" style="border-color: rgba(155,89,255,.85);" type="button">↺ RESET</button>
+            <button class="btn" style="border-color: rgba(0,212,255,.65);" type="button">💾 SAVE SESSION</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-line"></div>
+<p class="footer-text neon-purple">Powered by Zaya Group of Company</p>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+  <script src="./neon-trail.js"></script>
+  <script src="./frontend-api.js"></script>
+
+  <script>
+    // Loading screen progress (before showing the page)
+    (function(){
+      const loading = document.getElementById('loadingScreen');
+      const fill = document.getElementById('loadingFill');
+      const mainPage = document.querySelector('.site.page');
+      if(!loading || !fill || !mainPage) return;
+
+      const start = performance.now();
+      const duration = 2200;
+
+      mainPage.style.opacity = '0';
+      mainPage.style.pointerEvents = 'none';
+
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        const p = Math.round(100 * (1 - Math.pow(1 - t, 3)));
+        fill.style.width = p + '%';
+        if(t < 1){
+          requestAnimationFrame(tick);
+        } else {
+          loading.style.opacity = '0';
+          loading.style.transition = 'opacity .35s ease';
+          setTimeout(() => {
+            loading.remove();
+            mainPage.style.opacity = '1';
+            mainPage.style.pointerEvents = 'auto';
+            if(window.dispatchEvent) window.dispatchEvent(new Event('resize'));
+          }, 350);
+        }
+      };
+      requestAnimationFrame(tick);
+    })();
+
+    // Animate form score ring when formScore text changes
+    (function(){
+      const ringFg = document.querySelector('.ring-fg');
+      const formScoreEl = document.getElementById('formScore');
+      if(!ringFg || !formScoreEl) return;
+
+      const radius = parseFloat(ringFg.getAttribute('r') || '48');
+      const c = 2 * Math.PI * radius;
+      const update = (score) => {
+        const clamped = Math.max(0, Math.min(100, score));
+        const offset = c * (1 - clamped/100);
+        ringFg.style.strokeDashoffset = String(offset);
+      };
+
+      update(parseInt(formScoreEl.textContent || '0', 10));
+
+      const obs = new MutationObserver(() => {
+        const s = parseInt(formScoreEl.textContent || '0', 10);
+        update(s);
+
+        const color = s >= 90 ? 'rgba(45,255,122,1)'
+          : s >= 70 ? 'rgba(255,225,74,1)'
+          : s >= 50 ? 'rgba(255,138,42,1)'
+          : 'rgba(255,59,59,1)';
+        ringFg.style.stroke = color;
+
+        const scoreGlow = document.querySelector('.ring-score');
+        if(scoreGlow){
+          scoreGlow.style.textShadow = `0 0 10px ${color}, 0 0 22px ${color}`;
+        }
+      });
+      obs.observe(formScoreEl, {characterData:true, childList:true, subtree:true});
+    })();
+  </script>
+
+  <script>
+    // Workout controls + WebSocket streaming (exercise selection + WS gating)
+    document.addEventListener('DOMContentLoaded', function() {
+      let ws = null;
+      let isRunning = false;
+      let paused = false;
+      let sessionReps = 0;
+      let sessionScores = [];
+
+      const startBtn = document.querySelector('.btn--primary');
+      const pauseBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('PAUSE') || b.textContent.includes('RESUME'));
+      const resetBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('RESET'));
+      const saveBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('SAVE'));
+
+      const stageText = document.getElementById('stageText');
+      const feedbackText = document.getElementById('feedbackText');
+      const repValue = document.getElementById('repValue');
+      const formScore = document.getElementById('formScore');
+      const wsStatus = document.getElementById('wsStatus');
+      const canvas = document.getElementById('workoutCanvas');
+
+      function setStatus(connected) {
+        if (!wsStatus) return;
+        wsStatus.textContent = connected ? 'CONNECTED' : 'DISCONNECTED';
+        wsStatus.style.color = connected ? 'rgba(45,255,122,1)' : 'rgba(255,59,59,1)';
+      }
+
+      function renderFrame(base64Jpeg) {
+        if (!base64Jpeg || !canvas) return;
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+        img.src = 'data:image/jpeg;base64,' + base64Jpeg;
+      }
+
+      function handleMessage(msg) {
+        if (msg.frame) renderFrame(msg.frame);
+        if (typeof msg.rep_count === 'number') {
+          repValue.textContent = msg.rep_count;
+          sessionReps = msg.rep_count;
+        }
+        if (typeof msg.stage === 'string') {
+          stageText.textContent = 'STAGE: ' + msg.stage.toUpperCase();
+        }
+        if (typeof msg.form_score === 'number') {
+          const s = Math.round(msg.form_score);
+          formScore.textContent = s;
+          sessionScores.push(s);
+        }
+        if (msg.feedback) {
+          const f = Array.isArray(msg.feedback) ? msg.feedback[0] : msg.feedback;
+          if (f) feedbackText.textContent = f;
+        }
+      }
+
+      // 1) No default exercise on load
+      document.querySelectorAll('.ex-btn').forEach(btn => btn.classList.remove('is-active'));
+      if (stageText) stageText.textContent = 'SELECT AN EXERCISE';
+      if (feedbackText) feedbackText.textContent = 'Click an exercise button above to begin';
+      if (repValue) repValue.textContent = '0';
+      if (formScore) formScore.textContent = '0';
+
+      // 2) Exercise button handler
+      document.querySelectorAll('.ex-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          document.querySelectorAll('.ex-btn').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          const exercise = btn.textContent.trim().toLowerCase().replace(/ /g,'_');
+
+          stageText.textContent = 'SELECTED: ' + btn.textContent.trim();
+          feedbackText.textContent = btn.textContent.trim() + ' selected. Click START when ready!';
+          repValue.textContent = '0';
+          sessionReps = 0;
+          sessionScores = [];
+
+          try {
+            const userData = JSON.parse(localStorage.getItem('fitai_user') || '{}');
+            const userId = userData.id || userData.user_id || '1';
+
+            await fetch('http://localhost:8000/workout/switch-exercise', {
+              method: 'POST',
+              headers: {'Content-Type':'application/json'},
+              body: JSON.stringify({ user_id: userId, exercise })
+            });
+          } catch(e) {}
+        });
+      });
+
+      // 3) START button handler
+      startBtn.addEventListener('click', () => {
+        const activeEx = document.querySelector('.ex-btn.is-active');
+        if (!activeEx) {
+          feedbackText.textContent = 'Please select an exercise first!';
+          return;
+        }
+        if (isRunning) return;
+        startWorkout();
+      });
+
+      // 4) startWorkout() function
+      function startWorkout() {
+        // Ensure an exercise is selected before starting
+        const activeEx = document.querySelector('.ex-btn.is-active');
+        if (!activeEx) {
+          feedbackText.textContent = 'Please select an exercise first!';
+          return;
+        }
+
+        // Reset per-workout-session counters when START is clicked
+        isRunning = true;
+        paused = false;
+        sessionReps = 0;
+        sessionScores = [];
+        if (repValue) repValue.textContent = '0';
+        if (formScore) formScore.textContent = '0';
+
+        // Safe localStorage parsing for user data
+        let userData = {};
+        try {
+          const stored = localStorage.getItem('fitai_user');
+          if (stored && stored !== 'undefined' && stored !== 'null') {
+            userData = JSON.parse(stored);
+          }
+        } catch(e) {
+          userData = {};
+        }
+        const userId = userData.id || userData.user_id || '1';
+        const wsUrl = `ws://localhost:8000/ws/${userId}`;
+        ws = new WebSocket(wsUrl);
+
+        ws.onopen = () => {
+          setStatus(true);
+          const activeEx = document.querySelector('.ex-btn.is-active');
+          const name = activeEx ? activeEx.textContent.trim() : '';
+          feedbackText.textContent = 'GO! Do your ' + name + '!';
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const msg = JSON.parse(event.data);
+            if (msg.error) return;
+            handleMessage(msg);
+          } catch(e) {}
+        };
+
+        ws.onerror = () => setStatus(false);
+        ws.onclose = () => {
+          setStatus(false);
+          isRunning = false;
+        };
+      }
+
+      // 5) PAUSE button handler
+      pauseBtn.addEventListener('click', () => {
+        if (!paused) {
+          if (ws) ws.close();
+          isRunning = false;
+          paused = true;
+          pauseBtn.textContent = '▶ RESUME';
+          feedbackText.textContent = 'Paused. Click RESUME.';
+        } else {
+          paused = false;
+          pauseBtn.textContent = '⏸ PAUSE';
+          startWorkout();
+        }
+      });
+
+      // 6) RESET button handler
+      resetBtn.addEventListener('click', () => {
+        if (ws) { ws.close(); ws = null; }
+        isRunning = false;
+        paused = false;
+        sessionReps = 0;
+        sessionScores = [];
+        repValue.textContent = '0';
+        formScore.textContent = '0';
+        stageText.textContent = 'SELECT AN EXERCISE';
+        feedbackText.textContent = 'Click an exercise button above to begin';
+        document.querySelectorAll('.ex-btn').forEach(b => b.classList.remove('is-active'));
+        setStatus(false);
+        if (pauseBtn) pauseBtn.textContent = '⏸ PAUSE';
+      });
+
+      // 7) SAVE SESSION button handler
+      saveBtn.addEventListener('click', async () => {
+        const activeEx = document.querySelector('.ex-btn.is-active');
+        if (!activeEx) {
+          alert('Please select and complete an exercise first!');
+          return;
+        }
+
+        const exerciseName = activeEx.textContent.trim();
+        const exerciseKey = exerciseName.toLowerCase().replace(/ /g, '_');
+        const reps = sessionReps || parseInt(repValue.textContent || '0');
+
+        const avg = sessionScores.length > 0
+          ? Math.round(sessionScores.reduce((a,b)=>a+b,0) / sessionScores.length)
+          : 0;
+
+        const grade = avg >= 90 ? 'S - PERFECT'
+          : avg >= 80 ? 'A - EXCELLENT'
+          : avg >= 65 ? 'B - GOOD'
+          : avg >= 50 ? 'C - NEEDS WORK'
+          : 'D - KEEP TRYING';
+
+        try {
+          const userData = JSON.parse(localStorage.getItem('fitai_user') || '{}');
+          const userId = userData.id || userData.user_id || '1';
+
+          await fetch('http://localhost:8000/workout/switch-exercise', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ user_id: userId, exercise: exerciseKey })
+          });
+        } catch(e) {}
+
+        try {
+          const userData = JSON.parse(localStorage.getItem('fitai_user') || '{}');
+          const userId = userData.id || userData.user_id || '1';
+
+          await fetch('http://localhost:8000/workout/end/' + userId, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'}
+          });
+        } catch(e) {}
+
+        alert(
+          '╔══════════════════════╗\n' +
+          '║    SESSION SAVED!    ║\n' +
+          '╠══════════════════════╣\n' +
+          '║ Exercise : ' + exerciseName + '\n' +
+          '║ Reps     : ' + reps + '\n' +
+          '║ Avg Form : ' + avg + '/100\n' +
+          '║ Grade    : ' + grade + '\n' +
+          '╚══════════════════════╝'
+        );
+      });
+    });
+  </script>
+
+  <script src="./neural-particles.js"></script>
+  <script src="./transition.js"></script>
+</body>
+</html>
+

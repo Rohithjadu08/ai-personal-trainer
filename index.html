@@ -1,0 +1,357 @@
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Personal Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="navbar" id="siteNavbar">
+    <a class="brand" href="./index.html">
+      <span class="logo">⚡ FITAI</span>
+    </a>
+    <nav class="navlinks" aria-label="Primary">
+      <a href="./index.html">Home</a>
+      <a href="./train.html">Train</a>
+      <a href="./dashboard.html">Dashboard</a>
+      <a href="#about" class="navlink">About</a>
+    </nav>
+  </header>
+
+  <main class="site">
+    <!-- HERO -->
+    <section class="hero section" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy" data-fade>
+          <h1 class="h3d hero-title">AI PERSONAL TRAINER</h1>
+          <p class="hero-sub neon-purple">POWERED BY COMPUTER VISION + AI</p>
+
+          <div class="hero-cta" role="group" aria-label="Call to action">
+<a class="btn btn--primary" id="startBtn" href="./login.html"><span aria-hidden="true">▶</span> START TRAINING</a>
+<a class="btn btn-outline" id="progressBtn" href="#"><span aria-hidden="true">▣</span> VIEW PROGRESS</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" data-fade>
+          <div class="silhouette-wrap" aria-label="Squat silhouette animation">
+            <!-- CSS-driven silhouette (SVG-like) -->
+            <div class="silhouette float">
+              <div class="head"></div>
+              <div class="torso"></div>
+              <div class="arm left"></div>
+              <div class="arm right"></div>
+              <div class="leg left"></div>
+              <div class="leg right"></div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <h2 class="section-title h3d">FEATURES</h2>
+        <div class="cards-3">
+          <article class="card feature" data-fade>
+            <div class="feature-icon">
+              <span class="eye"></span>
+            </div>
+            <h3 class="h3d">REAL TIME POSE DETECTION</h3>
+            <p class="muted">Accurate keypoint tracking to keep you aligned.</p>
+          </article>
+          <article class="card feature purple-border" data-fade>
+            <div class="feature-icon">
+              <span class="bars"></span>
+            </div>
+            <h3 class="h3d">SMART REP COUNTING</h3>
+            <p class="muted">Detects reps automatically and updates feedback live.</p>
+          </article>
+          <article class="card feature magenta-border" data-fade>
+            <div class="feature-icon">
+              <span class="brain"></span>
+            </div>
+            <h3 class="h3d">AI FORM CORRECTION</h3>
+            <p class="muted">Real-time scoring to help you improve technique.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section how" id="how">
+      <div class="container">
+        <h2 class="section-title h3d">HOW IT WORKS</h2>
+        <div class="steps">
+          <div class="step" data-fade>
+            <div class="step-num neon-cyan">1</div>
+            <h3 class="h3d">Open Camera</h3>
+            <p class="muted">Activate your workout feed instantly.</p>
+          </div>
+          <div class="step-line" aria-hidden="true"></div>
+
+          <div class="step" data-fade>
+            <div class="step-num neon-purple">2</div>
+            <h3 class="h3d">Choose Exercise</h3>
+            <p class="muted">Select the movement you want to train.</p>
+          </div>
+          <div class="step-line" aria-hidden="true"></div>
+
+          <div class="step" data-fade>
+            <div class="step-num neon-magenta">3</div>
+            <h3 class="h3d">Start Moving</h3>
+            <p class="muted">AI monitors pose while you rep.</p>
+          </div>
+          <div class="step-line" aria-hidden="true"></div>
+
+          <div class="step" data-fade>
+            <div class="step-num neon-cyan">4</div>
+            <h3 class="h3d">Get AI Feedback</h3>
+            <p class="muted">Score + corrections delivered in real time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT US / MEET THE TEAM -->
+    <section class="section" id="about" style="padding:80px 18px; background: rgba(0,5,20,0.5);">
+      <div class="container">
+          <div style="text-align:center; margin-bottom:42px;">
+          <h2 class="neon-h h3d" style="font-size:42px; margin:0; text-transform:uppercase;">
+            MEET THE TEAM
+          </h2>
+          <p class="neon-purple" style="margin:12px 0 0; font-size:18px; font-family:'Orbitron', sans-serif; letter-spacing:.02em;">Zaya Group of Company — Building the Future of AI-Powered Fitness</p>
+        </div>
+
+
+        <div class="about-grid" style="display:block;">
+          <!-- FOUNDER (center, larger) -->
+          <div class="about-card about-card--founder" style="max-width:500px; margin:0 auto 22px; padding:22px; background: rgba(0,10,30,0.8); backdrop-filter: blur(10px); border-radius:18px; border:1px solid rgba(0,212,255,0.55); box-shadow: 0 0 30px rgba(0,212,255,0.12); position:relative; overflow:hidden; transition: transform .2s ease, box-shadow .2s ease;">
+            <div style="position:absolute; inset:-2px; background: linear-gradient(120deg, rgba(0,212,255,1), rgba(155,89,255,1), rgba(255,44,243,1)); opacity:.18; filter: blur(12px);"></div>
+            <div style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;">
+              <div class="about-avatar" style="width:80px; height:80px; border-radius:999px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(0,212,255,0.9); box-shadow: 0 0 22px rgba(0,212,255,0.35); background: radial-gradient(circle at 30% 20%, rgba(0,212,255,0.22), rgba(0,0,0,0));">
+                <div style="font-family:'Orbitron', sans-serif; font-weight:800; font-size:28px; color:#fff; text-shadow:0 0 14px rgba(0,212,255,0.7);">R</div>
+              </div>
+
+              <div class="about-role" style="font-family:'Orbitron', sans-serif; font-size:12px; letter-spacing:.18em; color: rgba(0,212,255,0.95);">FOUNDER &amp; CTO</div>
+              <div class="about-name" style="font-family:'Orbitron', sans-serif; font-size:34px; font-weight:800; color: rgba(0,212,255,1); text-shadow: 0 0 10px rgba(0,212,255,0.6), 0 0 24px rgba(0,212,255,0.35), 0 0 42px rgba(155,89,255,0.20); line-height:1.05;">ROHITH</div>
+              <div class="about-title" style="font-family:'Rajdhani', sans-serif; color: rgba(155,89,255,0.98); font-size:16px;">Chief Technology Officer | Zaya Group of Company</div>
+              <p class="about-desc" style="margin:0; color: rgba(234,246,255,0.92); font-size:16px; line-height:1.6; max-width:460px;">
+                The technical mastermind behind FITAI.
+                Rohith leads all AI/ML development at Zaya Group,
+                specializing in Computer Vision, Deep Learning, and
+                Generative AI to build next-generation fitness
+                technology that transforms how people train.
+              </p>
+
+              <div class="about-tags" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:4px;">
+                <span style="font-size:12px; font-family:'Orbitron', sans-serif; padding:7px 12px; border-radius:999px; border:1px solid rgba(0,212,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Computer Vision</span>
+                <span style="font-size:12px; font-family:'Orbitron', sans-serif; padding:7px 12px; border-radius:999px; border:1px solid rgba(0,212,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Deep Learning</span>
+                <span style="font-size:12px; font-family:'Orbitron', sans-serif; padding:7px 12px; border-radius:999px; border:1px solid rgba(0,212,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Generative AI</span>
+                <span style="font-size:12px; font-family:'Orbitron', sans-serif; padding:7px 12px; border-radius:999px; border:1px solid rgba(0,212,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Full Stack</span>
+                <span style="font-size:12px; font-family:'Orbitron', sans-serif; padding:7px 12px; border-radius:999px; border:1px solid rgba(0,212,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">AI Research</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CO-FOUNDERS GRID -->
+          <div class="about-cards" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:18px;">
+            <div class="about-card about-card--co" style="padding:20px; background: rgba(0,10,30,0.8); backdrop-filter: blur(10px); border-radius:18px; border:1px solid rgba(155,89,255,0.55); box-shadow: 0 0 30px rgba(155,89,255,0.12); transition: transform .2s ease, box-shadow .2s ease; text-align:center;">
+              <div class="about-avatar" style="width:60px; height:60px; border-radius:999px; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(155,89,255,0.95); box-shadow: 0 0 18px rgba(155,89,255,0.35); background: radial-gradient(circle at 30% 20%, rgba(155,89,255,0.22), rgba(0,0,0,0));">
+                <div style="font-family:'Orbitron', sans-serif; font-weight:800; font-size:22px; color:#fff; text-shadow:0 0 14px rgba(155,89,255,0.7);">RK</div>
+              </div>
+              <div style="font-family:'Orbitron', sans-serif; font-size:12px; letter-spacing:.18em; color: rgba(155,89,255,0.98);">CO-FOUNDER &amp; CEO</div>
+              <div style="font-family:'Orbitron', sans-serif; font-size:22px; font-weight:800; color:#fff; text-shadow:0 0 12px rgba(155,89,255,0.45), 0 0 36px rgba(155,89,255,0.25);">RAHUL KUMAR YADAV</div>
+              <div style="font-family:'Rajdhani', sans-serif; color: rgba(155,89,255,0.98); font-size:14px; margin-top:6px;">Chief Executive Officer | Zaya Group of Company</div>
+              <p style="margin:10px 0 0; color: rgba(234,246,255,0.92); font-size:14px; line-height:1.55;">
+                The driving force behind Zaya Group of 
+                Company. Rahul leads the company vision and business 
+                strategy, steering FITAI from concept to reality 
+                with strong leadership and entrepreneurial vision.
+              </p>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px;">
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(155,89,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Leadership</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(155,89,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Business Strategy</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(155,89,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Entrepreneurship</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(155,89,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Product Vision</span>
+              </div>
+            </div>
+
+            <div class="about-card about-card--co" style="padding:20px; background: rgba(0,10,30,0.8); backdrop-filter: blur(10px); border-radius:18px; border:1px solid rgba(155,89,255,0.55); box-shadow: 0 0 30px rgba(155,89,255,0.12); transition: transform .2s ease, box-shadow .2s ease; text-align:center;">
+              <div class="about-avatar" style="width:60px; height:60px; border-radius:999px; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(0,210,255,0.95); box-shadow: 0 0 18px rgba(0,210,255,0.35); background: radial-gradient(circle at 30% 20%, rgba(0,210,255,0.22), rgba(0,0,0,0));">
+                <div style="font-family:'Orbitron', sans-serif; font-weight:800; font-size:22px; color:#fff; text-shadow:0 0 14px rgba(0,210,255,0.7);">SK</div>
+              </div>
+              <div style="font-family:'Orbitron', sans-serif; font-size:12px; letter-spacing:.18em; color: rgba(0,210,255,0.98);">CO-FOUNDER</div>
+              <div style="font-family:'Orbitron', sans-serif; font-size:22px; font-weight:800; color:#fff; text-shadow:0 0 12px rgba(0,210,255,0.45), 0 0 36px rgba(0,210,255,0.25);">SUJAN KHATRI</div>
+              <div style="font-family:'Rajdhani', sans-serif; color: rgba(0,210,255,0.98); font-size:14px; margin-top:6px;">Network Manager | Zaya Group of Company</div>
+              <p style="margin:10px 0 0; color: rgba(234,246,255,0.92); font-size:14px; line-height:1.55;">
+                The backbone of FITAI's infrastructure.
+                Sujan ensures seamless connectivity and robust
+                network architecture that keeps the platform
+                running at peak performance for users worldwide.
+              </p>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px;">
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(0,210,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Network Architecture</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(0,210,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Infrastructure</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(0,210,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">System Administration</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(0,210,255,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Security</span>
+              </div>
+            </div>
+
+            <div class="about-card about-card--co" style="padding:20px; background: rgba(0,10,30,0.8); backdrop-filter: blur(10px); border-radius:18px; border:1px solid rgba(255,44,243,0.55); box-shadow: 0 0 30px rgba(255,44,243,0.12); transition: transform .2s ease, box-shadow .2s ease; text-align:center;">
+              <div class="about-avatar" style="width:60px; height:60px; border-radius:999px; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,44,243,0.95); box-shadow: 0 0 18px rgba(255,44,243,0.35); background: radial-gradient(circle at 30% 20%, rgba(255,44,243,0.22), rgba(0,0,0,0));">
+                <div style="font-family:'Orbitron', sans-serif; font-weight:800; font-size:22px; color:#fff; text-shadow:0 0 14px rgba(255,44,243,0.7);">SB</div>
+              </div>
+              <div style="font-family:'Orbitron', sans-serif; font-size:12px; letter-spacing:.18em; color: rgba(255,44,243,0.98);">CO-FOUNDER</div>
+              <div style="font-family:'Orbitron', sans-serif; font-size:22px; font-weight:800; color:#fff; text-shadow:0 0 12px rgba(255,44,243,0.45), 0 0 36px rgba(255,44,243,0.25);">SAMAGYA BARAL</div>
+              <div style="font-family:'Rajdhani', sans-serif; color: rgba(255,44,243,0.98); font-size:14px; margin-top:6px;">Graphic Designer | Zaya Group of Company</div>
+              <p style="margin:10px 0 0; color: rgba(234,246,255,0.92); font-size:14px; line-height:1.55;">
+                The creative genius behind FITAI's 
+                stunning cyberpunk visual identity. Samagya crafts 
+                every pixel of the user experience, bringing the 
+                neon aesthetic and intuitive design that makes 
+                FITAI stand out from the crowd.
+              </p>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px;">
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,44,243,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">UI/UX Design</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,44,243,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Brand Identity</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,44,243,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Motion Graphics</span>
+                <span style="font-size:11px; font-family:'Orbitron', sans-serif; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,44,243,0.55); color: rgba(234,246,255,0.95); background: rgba(0,0,0,0.18);">Creative Direction</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Company badge bottom -->
+        <div style="display:flex; justify-content:center; margin-top:34px;">
+          <div style="font-family:'Orbitron', sans-serif; color: rgba(0,212,255,0.95); letter-spacing:.02em; padding:10px 24px; border-radius:99px; border:1px solid rgba(0,212,255,0.4); box-shadow: 0 0 18px rgba(0,212,255,0.35); text-shadow: 0 0 18px rgba(0,212,255,0.35); background: rgba(0,0,0,0.18);">⚡ ZAYA GROUP OF COMPANY</div>
+        </div>
+      </div>
+
+      <style>
+        /* hover lift + glow intensify */
+        .about-card--founder:hover,
+        .about-card--co:hover{transform: translateY(-8px); box-shadow: 0 0 30px rgba(0,212,255,0.4);}
+
+        @media (max-width: 980px){
+          #about .about-cards{grid-template-columns: 1fr;}
+        }
+      </style>
+    </section>
+
+
+    <!-- STATS COUNTER -->
+    <section class="section" id="stats">
+      <div class="container">
+        <h2 class="section-title h3d">TRAINING IMPACT</h2>
+        <div class="stats-row">
+          <div class="stat" data-fade>
+            <div class="stat-value h3d" data-count="33">0</div>
+            <div class="stat-label neon-purple">33 BODY KEYPOINTS</div>
+          </div>
+          <div class="stat" data-fade>
+            <div class="stat-value h3d" data-count="5">0</div>
+            <div class="stat-label neon-purple">5 EXERCISES</div>
+          </div>
+          <div class="stat" data-fade>
+            <div class="stat-value h3d" data-count="100">0</div>
+            <div class="stat-label neon-purple">100 FORM SCORE</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-line"></div>
+<p class="footer-text neon-purple">Powered by Zaya Group of Company</p>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+  <script src="./neon-trail.js"></script>
+  <script src="./neural-particles.js"></script>
+  <script src="./transition.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('fitai_token');
+  const userStr = localStorage.getItem('fitai_user');
+  let isLoggedIn = false;
+  try {
+    if (token && token !== 'undefined' && 
+        userStr && userStr !== 'undefined') {
+      isLoggedIn = true;
+    }
+  } catch(e) {}
+  
+  // Update Train link
+  const trainLink = document.querySelector(
+    'a[href*="train"]');
+  if (trainLink) {
+    trainLink.href = isLoggedIn ? 
+      './train.html' : './login.html';
+  }
+  
+  // Update Dashboard link
+  const dashLink = document.querySelector(
+    'a[href*="dashboard"]');
+  if (dashLink) {
+    dashLink.href = isLoggedIn ? 
+      './dashboard.html' : './login.html';
+  }
+  
+  // Update START TRAINING button
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) {
+    startBtn.href = isLoggedIn ? 
+      './train.html' : './login.html';
+  }
+  
+  // Update VIEW PROGRESS button
+  const progressBtn = document.getElementById(
+    'progressBtn');
+  if (progressBtn) {
+    progressBtn.href = isLoggedIn ? 
+      './dashboard.html' : './login.html';
+  }
+
+  // Show logged in user name if available
+  if (isLoggedIn) {
+    try {
+      const user = JSON.parse(userStr);
+      const nameEl = document.getElementById('userName');
+      if (nameEl) {
+        nameEl.textContent = user.name || user.email;
+        nameEl.style.display = 'inline';
+      }
+      // Change login button to show user name
+      const loginBtn = document.querySelector(
+        '.btn-login, .nav-login');
+      if (loginBtn) {
+        loginBtn.textContent = 
+          '👤 ' + (user.name || user.email);
+      }
+    } catch(e) {}
+  }
+});
+</script>
+</body>
+</html>
+
+
+

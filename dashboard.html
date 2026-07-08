@@ -1,0 +1,319 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - AI Personal Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <script>
+    (function() {
+      const token = localStorage.getItem('fitai_token');
+      const user  = localStorage.getItem('fitai_user');
+      if (!token || !user) {
+        window.location.href = './login.html';
+        return;
+      }
+      window.addEventListener('DOMContentLoaded', () => {
+        try {
+          const userData = JSON.parse(user);
+          const nameEl = document.getElementById('userName');
+          if (nameEl) {
+            nameEl.textContent = userData.name || userData.email;
+          }
+        } catch (e) {}
+      });
+    })();
+
+    function logout() {
+      localStorage.removeItem('fitai_token');
+      localStorage.removeItem('fitai_user');
+      window.location.href = './index.html';
+    }
+
+  </script>
+
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="navbar navbar--glass" id="siteNavbar">
+    <div class="container navbar-inner">
+      <a class="brand" href="./index.html">
+        <span class="logo">⚡ FITAI</span>
+      </a>
+      <nav class="navlinks" aria-label="Primary">
+        <a class="navlink" href="./index.html">Home</a>
+        <a class="navlink" href="./train.html">Train</a>
+        <a class="navlink" href="./dashboard.html">Dashboard</a>
+      </nav>
+
+      <div class="nav-user">
+        <span class="user-name neon-cyan" id="userName"></span>
+        <button class="btn-logout" onclick="logout()">LOGOUT</button>
+      </div>
+    </div>
+  </header>
+
+  <style>
+    .nav-user{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .user-name{
+      font-family:'Orbitron', sans-serif;
+      font-size:12px;
+      letter-spacing:0.04em;
+      color: rgba(0,212,255,0.95);
+      text-shadow: 0 0 14px rgba(0,212,255,0.35);
+      max-width: 150px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid rgba(255,59,59,0.5);
+      color: rgba(255,59,59,0.8);
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover {
+      background: rgba(255,59,59,0.1);
+      border-color: rgba(255,59,59,1);
+      color: rgba(255,59,59,1);
+      box-shadow: 0 0 10px rgba(255,59,59,0.3);
+    }
+  </style>
+
+
+  <main class="site">
+    <section class="section dashboard">
+      <div class="container" data-reveal>
+        <h1 class="neon-h neon-h--3d" style="margin:0 0 18px; font-size:40px;">TRAINING DASHBOARD</h1>
+
+        <div class="date-row">
+          <div class="date-label neon-purple">DATE RANGE</div>
+          <div class="date-controls">
+            <button class="btn" type="button">Last 7 days</button>
+            <button class="btn btn--outline" type="button">Last 30 days</button>
+            <button class="btn btn--outline" type="button">All time</button>
+          </div>
+        </div>
+
+        <div class="metrics-row">
+          <div class="metric card borderGlow">
+            <div class="metric-top" style="border-top:2px solid rgba(0,212,255,.95);"></div>
+            <div class="metric-value neon-h neon-h--3d" id="totalSessions">0</div>
+            <div class="metric-label neon-purple">Total Sessions</div>
+            <div class="metric-badge">+8%</div>
+          </div>
+          <div class="metric card borderGlow">
+            <div class="metric-top" style="border-top:2px solid rgba(155,89,255,.95);"></div>
+            <div class="metric-value neon-h neon-h--3d" id="totalReps">0</div>
+            <div class="metric-label neon-purple">Total Reps</div>
+            <div class="metric-badge">+14%</div>
+          </div>
+          <div class="metric card borderGlow">
+            <div class="metric-top" style="border-top:2px solid rgba(255,44,243,.95);"></div>
+            <div class="metric-value neon-h neon-h--3d" id="avgFormScore">0/100</div>
+            <div class="metric-label neon-purple">Avg Form Score</div>
+            <div class="metric-badge">+3%</div>
+          </div>
+          <div class="metric card borderGlow">
+            <div class="metric-top" style="border-top:2px solid rgba(45,255,122,.95);"></div>
+            <div class="metric-value neon-h neon-h--3d" id="bestScore">0/100</div>
+            <div class="metric-label neon-purple">Best Score</div>
+            <div class="metric-badge">New</div>
+          </div>
+        </div>
+
+
+        <div class="charts-row">
+          <div class="chart-card card" data-reveal>
+            <h2 class="neon-h neon-h--3d chart-title">FORM SCORE OVER TIME</h2>
+            <div class="chart-wrap">
+              <canvas id="formScoreChart" height="140"></canvas>
+
+            </div>
+          </div>
+          <div class="chart-card card" data-reveal>
+            <h2 class="neon-h neon-h--3d chart-title">REPS PER SESSION</h2>
+            <div class="chart-wrap">
+              <canvas id="barChart" height="140"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="breakdown">
+          <h2 class="neon-h neon-h--3d">EXERCISE BREAKDOWN</h2>
+          <div class="breakdown-bars" id="breakdownBars"></div>
+        </div>
+
+        <div class="recent">
+          <h2 class="neon-h neon-h--3d">RECENT SESSIONS</h2>
+          <div class="table-wrap">
+            <table class="table" aria-label="Recent sessions">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Exercise</th>
+                  <th>Reps</th>
+                  <th>Avg Form</th>
+                  <th>Best Rep</th>
+                  <th>Grade</th>
+                </tr>
+              </thead>
+              <tbody id="sessionsTableBody"></tbody>
+
+            </table>
+          </div>
+        </div>
+
+        <div class="pbst">
+          <h2 class="neon-h neon-h--3d">PERSONAL BESTS</h2>
+          <div class="pbst-row" id="pbsRow"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-line"></div>
+<p class="footer-text neon-purple">Powered by Zaya Group of Company</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./app.js"></script>
+
+  <script src="./neon-trail.js"></script>
+  <script src="./transition.js"></script>
+  <script>
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch('http://localhost:8000/sessions/stats');
+        const data = await res.json();
+
+        // If no sessions exist, show message and clear charts/table
+        const hasSessions = (data.total_sessions || 0) > 0;
+        const tbody = document.getElementById('sessionsTableBody');
+
+        document.getElementById('totalSessions').textContent = data.total_sessions || 0;
+        document.getElementById('totalReps').textContent = data.total_reps || 0;
+        document.getElementById('avgFormScore').textContent = (data.avg_form_score || 0) + '/100';
+        document.getElementById('bestScore').textContent = (data.best_score || 0) + '/100';
+
+        if (!hasSessions) {
+          if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:rgba(234,246,255,0.5);padding:20px;">No sessions yet. Start training!</td></tr>';
+          }
+          return;
+        }
+
+        // Line chart - form score history
+        const lineCanvas = document.getElementById('formScoreChart');
+        const lineCtx = lineCanvas ? lineCanvas.getContext('2d') : null;
+        if (lineCtx) {
+          new Chart(lineCtx, {
+            type: 'line',
+            data: {
+              labels: data.form_score_history.map((_, i) => 'Session ' + (i + 1)),
+              datasets: [{
+                label: 'Form Score',
+                data: data.form_score_history,
+                borderColor: 'rgba(0,212,255,1)',
+                backgroundColor: 'rgba(0,212,255,0.1)',
+                pointBackgroundColor: 'rgba(0,212,255,1)',
+                tension: 0.4,
+                fill: true
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { labels: { color: 'rgba(234,246,255,0.8)' } } },
+              scales: {
+                x: { ticks: { color: 'rgba(234,246,255,0.6)' }, grid: { color: 'rgba(0,212,255,0.1)' } },
+                y: { min: 0, max: 100, ticks: { color: 'rgba(234,246,255,0.6)' }, grid: { color: 'rgba(0,212,255,0.1)' } }
+              }
+            }
+          });
+        }
+
+        // Bar chart - reps by exercise
+        const barCanvas = document.getElementById('exerciseChart');
+        const barCtx = barCanvas ? barCanvas.getContext('2d') : null;
+        if (barCtx) {
+          const exData = data.sessions_by_exercise || {};
+          new Chart(barCtx, {
+            type: 'bar',
+            data: {
+              labels: Object.keys(exData).map(k => k.replace(/_/g, ' ').toUpperCase()),
+              datasets: [{
+                label: 'Sessions',
+                data: Object.values(exData),
+                backgroundColor: 'rgba(155,89,255,0.7)',
+                borderColor: 'rgba(155,89,255,1)',
+                borderWidth: 2
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { labels: { color: 'rgba(234,246,255,0.8)' } } },
+              scales: {
+                x: { ticks: { color: 'rgba(234,246,255,0.6)' }, grid: { color: 'rgba(155,89,255,0.1)' } },
+                y: { ticks: { color: 'rgba(234,246,255,0.6)' }, grid: { color: 'rgba(155,89,255,0.1)' } }
+              }
+            }
+          });
+        }
+
+        // Recent sessions table
+        if (tbody) {
+          tbody.innerHTML = '';
+          data.recent_sessions.forEach(s => {
+            const gradeColor =
+              s.grade === 'S' ? 'rgba(45,255,122,1)'
+              : s.grade === 'A' ? 'rgba(0,212,255,1)'
+              : s.grade === 'B' ? 'rgba(255,225,74,1)'
+              : s.grade === 'C' ? 'rgba(255,138,42,1)'
+              : 'rgba(255,59,59,1)';
+
+            tbody.innerHTML +=
+              '<tr>' +
+              '<td>' + (s.date || '') + '</td>' +
+              '<td>' + (s.exercise || '').replace(/_/g, ' ').toUpperCase() + '</td>' +
+              '<td>' + (s.total_reps || 0) + '</td>' +
+              '<td>' + (s.avg_form_score || 0) + '/100</td>' +
+              '<td>' + (s.grade || 'N/A') + '</td>' +
+              '<td>' + '<span style="color:' + gradeColor + ';font-weight:bold;font-size:18px;">' + (s.grade || 'N/A') + '</span>' + '</td>' +
+              '</tr>';
+          });
+        }
+      } catch (e) {
+        console.error('Dashboard load error:', e);
+        const el = document.getElementById('totalSessions');
+        if (el) el.textContent = '0';
+      }
+    }
+
+    loadDashboard();
+    setInterval(loadDashboard, 30000);
+  </script>
+  <script src="./neon-trail.js"></script>
+  <script src="./transition.js"></script>
+</body>
+</html>
+
+
