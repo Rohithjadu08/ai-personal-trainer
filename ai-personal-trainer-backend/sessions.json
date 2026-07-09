@@ -1,0 +1,52 @@
+[
+  {
+    "id": "a5361120-d642-4c22-a032-d1066818db08",
+    "user_id": "1",
+    "exercise": "squat",
+    "date": "2026-06-26 16:01",
+    "total_reps": 3,
+    "avg_form_score": 90.0,
+    "grade": "A",
+    "duration_seconds": 24.32
+  },
+  {
+    "id": "5bf3f169-e14e-4265-8dd9-693ffdb88e70",
+    "user_id": "1",
+    "exercise": "squat",
+    "date": "2026-06-26 16:02",
+    "total_reps": 1,
+    "avg_form_score": 90.0,
+    "grade": "A",
+    "duration_seconds": 25.45
+  },
+  {
+    "id": "43ef7bb3-a4ae-4009-bda7-7a6eff920240",
+    "user_id": "1",
+    "exercise": "bicep_curl",
+    "date": "2026-06-29 20:48",
+    "total_reps": 3,
+    "avg_form_score": 100.0,
+    "grade": "A",
+    "duration_seconds": 20.6
+  },
+  {
+    "id": "66ee43cf-80c2-462d-b4c8-33d0710bde6b",
+    "user_id": "1",
+    "exercise": "shoulder_press",
+    "date": "2026-06-29 20:49",
+    "total_reps": 4,
+    "avg_form_score": 99.4,
+    "grade": "A",
+    "duration_seconds": 35.63
+  },
+  {
+    "id": "51de529b-962f-47b1-9676-483c87ba89e3",
+    "user_id": "1",
+    "exercise": "bicep_curl",
+    "date": "2026-07-06 19:28",
+    "total_reps": 2,
+    "avg_form_score": 100.0,
+    "grade": "A",
+    "duration_seconds": 56.85
+  }
+]

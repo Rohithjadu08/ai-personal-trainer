@@ -13,10 +13,7 @@ ai-personal-trainer-backend/angle_debug.py
 ai-personal-trainer-backend/angle_debug2.py
 ai-personal-trainer-backend/joint_check.py
 ai-personal-trainer-backend/elbow_angles.py
-ai-personal-trainer-backend/sessions.json
 .DS_Store
 Thumbs.db
-desktop.ini
 node_modules/
 *.log
-
