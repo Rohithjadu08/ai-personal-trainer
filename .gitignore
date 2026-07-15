@@ -8,12 +8,8 @@ ai-personal-trainer-backend/.env
 *.db
 *.sqlite
 *.db-journal
-ai-personal-trainer-backend/pose_test.py
-ai-personal-trainer-backend/angle_debug.py
-ai-personal-trainer-backend/angle_debug2.py
-ai-personal-trainer-backend/joint_check.py
-ai-personal-trainer-backend/elbow_angles.py
 .DS_Store
 Thumbs.db
 node_modules/
 *.log
+
